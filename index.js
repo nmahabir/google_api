@@ -1,9 +1,10 @@
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
+const calendar = require('google-calendar')
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 const TOKEN_PATH = 'token.json';
 
 // Load client secrets from a local file.
@@ -63,29 +64,63 @@ function getAccessToken(oAuth2Client, callback) {
   });
 }
 
-/**
- * Lists the next 10 events on the user's primary calendar.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-function listEvents(auth) {
-  const calendar = google.calendar({version: 'v3', auth});
-  calendar.events.list({
-    calendarId: 'primary',
-    timeMin: (new Date()).toISOString(),
-    maxResults: 10,
-    singleEvents: true,
-    orderBy: 'startTime',
-  }, (err, res) => {
-    if (err) return console.log('The API returned an error: ' + err);
-    const events = res.data.items;
-    if (events.length) {
-      console.log('Upcoming 10 events:');
-      events.map((event, i) => {
-        const start = event.start.dateTime || event.start.date;
-        console.log(`${start} - ${event.summary}`);
-      });
-    } else {
-      console.log('No upcoming events found.');
+// /**
+//  * Lists the next 10 events on the user's primary calendar.
+//  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+//  */
+// function listEvents(auth) {
+//   const calendar = google.calendar({version: 'v3', auth});
+//   calendar.events.list({
+//     calendarId: 'primary',
+//     timeMin: (new Date()).toISOString(),
+//     maxResults: 10,
+//     singleEvents: true,
+//     orderBy: 'startTime',
+//   }, (err, res) => {
+//     if (err) return console.log('The API returned an error: ' + err);
+//     const events = res.data.items;
+//     if (events.length) {
+//       console.log('Upcoming 10 events:');
+//       events.map((event, i) => {
+//         const start = event.start.dateTime || event.start.date;
+//         console.log(`${start} - ${event.summary}`);
+//       });
+//     } else {
+//       console.log('No upcoming events found.');
+//     }
+//   });
+// }
+
+var event = {
+    summary: "Breakfast",
+    description: "Eggs-in-hash-brown-nests-352693",
+    start: {
+      dateTime: "2018-10-08T09:00:00-07:00",
+      timeZone: "Canada/Toronto"
+    },
+    end: {
+      dateTime: "2018-10-08T09:00:00-09:00",
+      timeZone: "Canada/Toronto"
+    },
+    //   recurrence: ["RRULE:FREQ=DAILY;COUNT=2"],
+    reminders: {
+      useDefault: false,
+      overrides: [
+        { method: "email", minutes: 24 * 60 },
+        { method: "popup", minutes: 10 }
+      ]
     }
+  };
+    
+  calendar.events.insert({
+    auth: auth,
+    calendarId: 'primary',
+    resource: event,
+  }, function(err, event) {
+    if (err) {
+      console.log('There was an error contacting the Calendar service: ' + err);
+      return;
+    }
+    console.log('Event created: %s', event.htmlLink);
   });
-}
+  
