@@ -6,8 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmahabir/google_api.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nmahabir/google_api/issues"
+  },
+  "homepage": "https://github.com/nmahabir/google_api#readme",
   "dependencies": {
     "fs": "0.0.1-security",
     "googleapis": "^27.0.0",
