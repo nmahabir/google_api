@@ -11,6 +11,7 @@ fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Calendar API.
   authorize(JSON.parse(content), createEvents);
+  // authorize(JSON.parse(content), listEvents);
 });
 
 /**
@@ -90,18 +91,16 @@ function listEvents(auth) {
   });
 }
 
-// const {google} = require('googleapis');
-
 var event = {
-    id: "test8",
+    id: "test13",
     summary: "Breakfast",
     description: "Eggs-in-hash-brown-nests-352693",
     start: { // 7am 
-      dateTime: "2018-10-08T06:00:00-05:00",
+      dateTime: "2018-10-11T06:00:00-05:00",
       timeZone: "Canada/Eastern"
     },
     end: { // 9am
-      dateTime: "2018-10-08T08:00:00-05:00",
+      dateTime: "2018-10-11T08:00:00-05:00",
       timeZone: "Canada/Eastern"
     }
   };
@@ -121,7 +120,7 @@ var event = {
           );
           return;
         }
-        console.log("Event created: %s", event);
+        console.log("Event created: ", event.data.id, event.data.summary, event.data.description);
       }
     );
   }
