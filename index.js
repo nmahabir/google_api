@@ -1,7 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
-const calendar = require("google-calendar");
+// const calendar = require("google-calendar")
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ["https://www.googleapis.com/auth/calendar"];
@@ -98,6 +98,7 @@ function listEvents(auth) {
 }
 
 var event = {
+  id: "test1",
   summary: "Breakfast",
   description: "Eggs-in-hash-brown-nests-352693",
   start: {
@@ -107,14 +108,6 @@ var event = {
   end: {
     dateTime: "2018-10-08T09:00:00-09:00",
     timeZone: "Canada/Toronto"
-  },
-  //   recurrence: ["RRULE:FREQ=DAILY;COUNT=2"],
-  reminders: {
-    useDefault: false,
-    overrides: [
-      { method: "email", minutes: 24 * 60 },
-      { method: "popup", minutes: 10 }
-    ]
   }
 };
 
